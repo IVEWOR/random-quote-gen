@@ -6,6 +6,8 @@ import axios from "axios";
 export default function Home() {
   const [quote, setQuote] = useState("");
   const [author, setAuthor] = useState("");
+  const [loading, setLoading] = useState(false);
+
   const fetchCalledRef = useRef(false);
 
   const fetchQuote = async () => {
@@ -13,6 +15,7 @@ export default function Home() {
       const response = await axios.get("https://api.quotable.io/random");
       setQuote(response.data.content);
       setAuthor(response.data.author);
+      setLoading(true);
     } catch (error) {
       console.error(`Error fetching the data ${error}`);
     }
@@ -31,8 +34,8 @@ export default function Home() {
         <h1 className="text-3xl font-semibold mb-4">
           Random Quote Generator App
         </h1>
-        <p className="text-lg">{quote}</p>
-        <p className="italic mt-4">~ {author}</p>
+        <p className="text-lg">{loading ? quote : "loading..."}</p>
+        <p className="italic mt-4">{loading ? "~ " + author : ""}</p>
       </div>
       <div className="flex">
         <button
