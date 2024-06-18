@@ -1,11 +1,12 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import axios from "axios";
 
 export default function Home() {
   const [quote, setQuote] = useState("");
   const [author, setAuthor] = useState("");
+  const fetchCalledRef = useRef(false);
 
   const fetchQuote = async () => {
     try {
@@ -18,7 +19,10 @@ export default function Home() {
   };
 
   useEffect(() => {
-    fetchQuote();
+    if (!fetchCalledRef.current) {
+      fetchQuote();
+      fetchCalledRef.current = true;
+    }
   }, []);
 
   return (
